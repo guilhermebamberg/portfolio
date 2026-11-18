@@ -351,8 +351,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
           <label>Cidade<input id="f-ci" placeholder="Ex.: São Paulo"></label>
           <label>Data<input id="f-dt" type="date"></label>
           <label>Duração<select id="f-du"><option value="">Selecione</option><option>1 dia</option><option>2 dias</option><option>3 dias ou mais</option></select></label>
-          <label>Quantidade de eventos<input id="f-qe" type="number" min="1" inputmode="numeric" placeholder="Ex.: 1"></label>
-          <label>Público por evento<select id="f-pu"><option value="">Selecione</option><option>Até 100 pessoas</option><option>100 a 300 pessoas</option><option>300 a 1.000 pessoas</option><option>Mais de 1.000 pessoas</option></select></label>
+          <label>Quantas pessoas no evento<select id="f-pu"><option value="">Selecione</option><option>Até 100 pessoas</option><option>100 a 500 pessoas</option><option>500 a 1.000 pessoas</option><option>1.000 a 3.000 pessoas</option><option>3.000 a 5.000 pessoas</option><option>Mais de 5.000 pessoas</option></select></label>
         </div>
       </div>
       <div class="side">
@@ -436,6 +435,7 @@ document.getElementById("deps").innerHTML=DEP.map(d=>`<div class="dep"><div clas
 const I={
  cam:'<svg viewBox="0 0 64 64" fill="none" stroke="#f2f4f8" stroke-width="2.4" stroke-linejoin="round"><rect x="6" y="18" width="40" height="30" rx="5"/><path d="M46 28l12-7v22l-12-7"/><circle cx="26" cy="33" r="8"/><rect x="12" y="12" width="12" height="6" rx="2"/></svg>',
  phone:'<svg viewBox="0 0 64 64" fill="none" stroke="#f2f4f8" stroke-width="2.4"><rect x="18" y="4" width="28" height="56" rx="6"/><path d="M28 9h8"/><circle cx="32" cy="32" r="7" stroke="#ff3b30"/><circle cx="32" cy="32" r="2.5" fill="#ff3b30" stroke="none"/></svg>',
+ lens:'<svg viewBox="0 0 64 64" fill="none" stroke="#f2f4f8" stroke-width="2.4"><circle cx="32" cy="32" r="24"/><circle cx="32" cy="32" r="14"/><path d="M32 18l7 12M46 32l-12 6M32 46l-7-12M18 32l12-6" stroke="#3a73ff"/><circle cx="32" cy="32" r="4" fill="#3a73ff" stroke="none"/></svg>',
  mic:'<svg viewBox="0 0 64 64" fill="none" stroke="#f2f4f8" stroke-width="2.4"><rect x="24" y="6" width="16" height="30" rx="8"/><path d="M16 30a16 16 0 0032 0M32 46v12M22 58h20"/></svg>',
  flash:'<svg viewBox="0 0 64 64" fill="none" stroke="#f2f4f8" stroke-width="2.4" stroke-linejoin="round"><rect x="8" y="22" width="48" height="32" rx="5"/><circle cx="32" cy="38" r="10"/><circle cx="32" cy="38" r="4"/><path d="M22 22l4-8h12l4 8"/><path d="M46 28h4"/></svg>',
  bolt:'<svg viewBox="0 0 64 64" fill="none" stroke="#3a73ff" stroke-width="2.4" stroke-linejoin="round"><path d="M36 4L12 36h18l-4 24 26-34H34z"/></svg>',
@@ -445,7 +445,7 @@ const ITEMS=[
  ["phone","Stories ao vivo","Cobertura em tempo real"],
  ["bolt","Same day","Melhores momentos no mesmo dia"],
  ["cam","Vídeo do evento","Aftermovie"],
- ["mic","Entrevistas","Participantes e depoimentos"],
+ ["lens","Tudo em câmera profissional","Stories e vídeos 100% captados com câmera"],
  ["flash","Fotografia","Palco, plateia, bastidor"],
  ["drive","Banco de conteúdo","Gravo no evento, vira reels nas semanas seguintes"],
 ];
@@ -457,7 +457,7 @@ const F=id=>document.getElementById(id).value.trim();document.getElementById("t-
 function update(){const l=document.getElementById("tl");const arr=[...filled].sort().map(i=>ITEMS[i][1]);l.innerHTML=arr.length?arr.map(t=>`<li>${t}</li>`).join(""):'<li class="e">O case está vazio…</li>';
  document.getElementById("mt").style.width=filled.size/6*100+"%";document.getElementById("mc").textContent=filled.size+" de 6";
  document.getElementById("lbl").textContent=filled.size?"EVENTO · "+filled.size+" ITENS":"EVENTO —";
- const b=document.getElementById("send");b.classList.toggle("off",!filled.size);const dt=F("f-dt")?F("f-dt").split("-").reverse().join("/"):"";const d=[F("f-ev")&&"Evento: "+F("f-ev"),F("f-ci")&&"Cidade: "+F("f-ci"),dt&&"Data: "+dt,F("f-du")&&"Duração: "+F("f-du"),F("f-qe")&&"Quantidade de eventos: "+F("f-qe"),F("f-pu")&&"Público: "+F("f-pu")].filter(Boolean);document.getElementById("t-det").textContent=d.join("\n");
+ const b=document.getElementById("send");b.classList.toggle("off",!filled.size);const dt=F("f-dt")?F("f-dt").split("-").reverse().join("/"):"";const d=[F("f-ev")&&"Evento: "+F("f-ev"),F("f-ci")&&"Cidade: "+F("f-ci"),dt&&"Data: "+dt,F("f-du")&&"Duração: "+F("f-du"),F("f-pu")&&"Pessoas no evento: "+F("f-pu")].filter(Boolean);document.getElementById("t-det").textContent=d.join("\n");
  b.href="https://wa.me/5551997308338?text="+encodeURIComponent("Oi Guilherme! Montei minha cobertura no seu site:\n"+arr.map(x=>"• "+x).join("\n")+(d.length?"\n\n"+d.join("\n"):""))}
 function put(i){if(filled.has(i))return;filled.add(i);const s=foam.children[i];s.classList.add("filled");s.insertAdjacentHTML("beforeend",`<div class="in">${I[ITEMS[i][0]]}<span>${ITEMS[i][1]}</span></div>`);shelf.querySelector(`.item[data-i="${i}"]`).classList.add("used");update()}
 function take(i){filled.delete(i);const s=foam.children[i];s.classList.remove("filled");s.querySelector(".in")?.remove();shelf.querySelector(`.item[data-i="${i}"]`).classList.remove("used");update()}
@@ -474,7 +474,7 @@ shelf.addEventListener("pointerup",e=>{if(cur===null)return;const hot=foam.query
  foam.querySelectorAll(".hot").forEach(s=>s.classList.remove("hot"));ghost&&ghost.remove();ghost=null;cur=null});
 update();
 
-["f-ev","f-ci","f-dt","f-du","f-qe","f-pu"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",update);el.addEventListener("change",update)});
+["f-ev","f-ci","f-dt","f-du","f-pu"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",update);el.addEventListener("change",update)});
 
 
 /* proteção básica do conteúdo: sem menu de "salvar", sem arrastar, sem baixar pelo player */
