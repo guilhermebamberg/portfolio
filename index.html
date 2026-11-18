@@ -71,8 +71,9 @@ h2.d em{font-style:normal;color:var(--blue)}
 .ph-wrap .cap b{display:block;font-family:Archivo;font-stretch:75%;font-weight:800;font-size:26px;text-transform:uppercase;line-height:1}
 .ph-wrap .cap span{color:var(--mute);font-size:15px}
 .ph-wrap .note{font-size:13px;color:var(--mute);border-left:2px solid var(--blue);padding-left:10px}
-.phone{width:300px;aspect-ratio:9/16;border-radius:36px;border:9px solid #000;outline:1px solid rgba(255,255,255,.14);position:relative;overflow:hidden;background:#000;box-shadow:0 40px 90px -30px var(--glow)}
+.phone{width:300px;aspect-ratio:9/16;border-radius:30px;border:5px solid #000;outline:1px solid rgba(255,255,255,.14);position:relative;overflow:hidden;background:#000;box-shadow:0 40px 90px -30px var(--glow)}
 .phone .media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone.rec .media{inset:auto;left:-5.75%;top:-15.3%;width:111.5%;max-width:none;height:auto;object-fit:fill}
 .bars{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:3px;z-index:3}
 .bars i{flex:1;height:3px;background:rgba(255,255,255,.3);border-radius:3px;overflow:hidden}.bars b{display:block;height:100%;width:0;background:#fff}
 .who{position:absolute;top:22px;left:12px;z-index:3;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,.6)}
@@ -232,8 +233,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   .phone,.ph-wrap{width:min(300px,82vw)}.reel{width:170px}.shot{width:210px}
   summary{font-size:22px}
   .fstage{aspect-ratio:auto;height:88vh}.ftxt{font-size:10vw;top:10%;line-height:.98;left:0;text-align:center}.fstage .fbg,.fstage .fper{object-position:54% 50%}.fbtn{left:20px;right:20px;top:auto;justify-content:center;bottom:8%}
-  .bast{grid-template-columns:1fr;gap:28px}.bast h3{font-size:40px}.bast video{width:min(300px,82vw)}
-  .stage{grid-template-columns:1fr}.shelf{flex-direction:row;overflow-x:auto}.item{flex:none}.foam{grid-auto-rows:120px}.side .ticket{transform:none}.ticket{position:static;transform:none}.fields{grid-template-columns:1fr}
+  .bast{grid-template-columns:1fr;gap:28px}.bast h3{font-size:9.6vw}.bast video{width:min(300px,82vw)}
+  .stage{grid-template-columns:1fr}.shelf{flex-direction:row;overflow-x:auto;flex-wrap:nowrap;padding-bottom:8px;mask-image:linear-gradient(90deg,#000 80%,transparent)}.shelf h3{display:none}.item{flex:none;width:58vw;padding:10px 12px}.item svg{width:34px;height:34px}.swipe{display:flex!important}.foam{grid-auto-rows:120px}.side .ticket{transform:none}.ticket{position:static;transform:none}.fields{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
 </style>
@@ -252,7 +253,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   <div class="in">
     <h1 class="d">Guilherme Bamberg</h1>
     <div class="meta">
-      <p>Videomaker e story maker de eventos. Você constrói a história no palco. Eu conto ela nas suas redes.</p>
+      <p>Videomaker e StoryMaker de eventos. Você constrói a história no palco. Eu conto ela nas suas redes.</p>
       <div class="r"><span class="live"><i></i>Ao vivo no Espectro</span><a class="btn blue" data-wpp href="#">Orçar meu evento</a></div>
     </div>
   </div>
@@ -261,9 +262,9 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 <section id="experts">
   <div class="wrap">
     <div class="lab rv"><b>(01)</b> Com quem eu já trabalhei</div>
-    <h2 class="d rv">Os maiores do <em>digital</em> confiam o palco a mim.</h2>
+    <h2 class="d rv">Os <em>maiores</em> do digital confiam o palco a mim.</h2>
     <div class="exlist rv" id="exp"></div>
-    <div class="bast rv"><video src="assets/vid/bastidor-geronimo.mp4" poster="assets/vid/bastidor-geronimo.jpg" autoplay muted loop playsinline></video><div><p class="lab" style="margin-bottom:18px"><b>Bastidor</b> Eventos do Geronimo Theml</p><h3 class="d">Eu não fico no fundo da sala. Eu fico onde a história acontece.</h3><p>Cubro os eventos do Geronimo até hoje: palco, corredor, bastidor e tudo o que vira conteúdo.</p></div></div>
+    <div class="bast rv"><video src="assets/vid/bastidor-geronimo.mp4" poster="assets/vid/bastidor-geronimo.jpg" autoplay muted loop playsinline></video><div><p class="lab" style="margin-bottom:18px"><b>Bastidor</b> Eventos do Geronimo Theml</p><h3 class="d">Eu não fico no fundo da sala. Eu fico onde a história acontece.</h3><p>Palco, corredor, bastidor: eu cubro tudo o que vira conteúdo.</p></div></div>
   </div>
 </section>
 
@@ -337,6 +338,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     <h2 class="d rv">Arraste o que vai <em>no seu evento</em>.</h2>
     <p class="rv" style="color:var(--mute);font-size:18px;max-width:52ch;margin:-30px 0 40px">Cada equipamento é um serviço. Coloque no case, preencha os detalhes e o pedido chega pronto no meu WhatsApp.</p>
     <div class="stage rv">
+      <div class="swipe" style="display:none;align-items:center;gap:8px;font-size:14px;color:var(--mute);margin-bottom:10px">Deslize para ver todos os equipamentos <b style="color:var(--blue);font-size:18px">→</b> e toque para colocar no case</div>
       <div class="shelf" id="shelf"><h3>Equipamentos · arraste para o case (ou toque)</h3></div>
       <div>
         <div class="case">
@@ -349,6 +351,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
           <label>Cidade<input id="f-ci" placeholder="Ex.: São Paulo"></label>
           <label>Data<input id="f-dt" type="date"></label>
           <label>Duração<select id="f-du"><option value="">Selecione</option><option>1 dia</option><option>2 dias</option><option>3 dias ou mais</option></select></label>
+          <label>Quantidade de eventos<input id="f-qe" type="number" min="1" inputmode="numeric" placeholder="Ex.: 1"></label>
+          <label>Público por evento<select id="f-pu"><option value="">Selecione</option><option>Até 100 pessoas</option><option>100 a 300 pessoas</option><option>300 a 1.000 pessoas</option><option>Mais de 1.000 pessoas</option></select></label>
         </div>
       </div>
       <div class="side">
@@ -363,9 +367,9 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   <div class="wrap">
     <div class="lab rv"><b>(08)</b> Perguntas frequentes</div>
     <div class="faq rv">
-      <details><summary>Você está com agenda aberta para social media?</summary><p>Estou. Atendo clientes de social media e produção de conteúdo, além das coberturas. Me chama no WhatsApp que a gente conversa sobre o seu perfil.</p></details>
+      <details><summary>Você está com agenda aberta para social media?</summary><p>Estou analisando caso a caso. Sou bem seletivo para fechar com novos clientes, porque precisa ter um casamento de ideias. Mas isso não te impede de me chamar: me conta sobre o seu perfil e a gente vê se faz sentido.</p></details>
       <details><summary>Em quanto tempo recebo o material?</summary><p>Os stories saem ao vivo, durante o evento. O same day fica pronto no mesmo dia. Os brutos são entregues em até 7 dias.</p></details>
-      <details><summary>Você também presta serviço de fotografia?</summary><p>Sim. Fotografia de palco, plateia, bastidor e até de procedimentos cirúrgicos.</p></details>
+      <details><summary>Você também presta serviço de fotografia?</summary><p>Sim.</p></details>
       <details><summary>Você posta direto no meu perfil?</summary><p>Pode ser. Posto direto com acesso combinado, ou envio para a sua equipe aprovar antes.</p></details>
       <details><summary>Como funciona o orçamento?</summary><p>Me chama no WhatsApp com a data, a cidade e o tamanho do evento. Respondo com uma proposta sob medida.</p></details>
       <details><summary>Você faz cobertura fora de São Paulo?</summary><p>Faço. Me chama com a cidade e a data do evento.</p></details>
@@ -399,7 +403,7 @@ const STORIES={
   hl:{rec:1,title:"CCX · High Light",sub:"Cobertura de 3 dias para a HL Assessoria",items:range(17,"mp4","highlight")},
 };
 function phone(key){const s=STORIES[key];
-  return `<div class="ph-wrap"><div class="phone" data-st="${key}"><div class="bars" ${s.rec?'style="opacity:0"':""}>${s.items.map(()=>"<i><b></b></i>").join("")}</div>${s.rec?"":`<div class="who"><img src="assets/av/${s.av}.png" alt="">${s.who}</div>`}<div class="pslot"></div><button class="tap l" aria-label="Anterior"></button><button class="tap r" aria-label="Próximo"></button><div class="play"><span>▶ Assistir</span></div><button class="snd" aria-label="Ligar som">som desligado</button></div><div class="cap"><b>${s.title}</b><span>${s.sub}</span></div>${s.note?`<div class="note">${s.note}</div>`:""}</div>`}
+  return `<div class="ph-wrap"><div class="phone${s.rec?" rec":""}" data-st="${key}"><div class="bars" style="display:none">${s.items.map(()=>"<i><b></b></i>").join("")}</div><div class="pslot"></div><button class="tap l" aria-label="Anterior"></button><button class="tap r" aria-label="Próximo"></button><div class="play"><span>▶ Assistir</span></div><button class="snd" aria-label="Ligar som">som desligado</button></div><div class="cap"><b>${s.title}</b><span>${s.sub}</span></div>${s.note?`<div class="note">${s.note}</div>`:""}</div>`}
 function wirePhone(el){
   const s=STORIES[el.dataset.st],bars=[...el.querySelectorAll(".bars b")],slot=el.querySelector(".pslot");let i=0,t0=0,dur=5000,muted=true,started=false;
   function show(n){i=(n+s.items.length)%s.items.length;bars.forEach((b,k)=>b.style.width=k<i?"100%":"0");const src=s.items[i];
@@ -417,7 +421,7 @@ document.querySelectorAll("#phones .phone").forEach(wirePhone);
 
 function reelHTML(f,l){return `<div class="reel" data-src="assets/vid/reels/${f}.mp4"><img src="assets/vid/reels/${f}.jpg" alt="" loading="lazy"><small>${l}</small></div>`}
 document.querySelectorAll("[data-reels]").forEach(el=>el.innerHTML=el.dataset.reels.split(",").map(x=>reelHTML(...x.split(":"))).join(""));
-document.getElementById("medrow").innerHTML=reelHTML("lipoescultura","Cirurgia de lipoescultura")+reelHTML("leandro-final","Dr. Leandro Gregório")+reelHTML("leandro-medos","Dr. Leandro Gregório")+["cir1","cir2","cir3"].map(c=>`<div class="shot sens"><img src="assets/img/${c}.jpg" alt="Fotografia cirúrgica" loading="lazy"><button>Imagem de cirurgia<br>toque para ver</button></div>`).join("");
+document.getElementById("medrow").innerHTML=reelHTML("lipoescultura","Cirurgia de lipoescultura")+reelHTML("leandro-final","Dr. Leandro Gregório")+reelHTML("leandro-medos","Dr. Leandro Gregório")+["cir1","cir2","cir3","cir4","cir5","cir6","cir7","cir8","cir9","cir10"].map(c=>`<div class="shot sens"><img src="assets/img/${c}.jpg" alt="Fotografia cirúrgica" loading="lazy"><button>Imagem de cirurgia<br>toque para ver</button></div>`).join("");
 document.addEventListener("click",e=>{
   const r=e.target.closest(".reel");if(r&&!r.classList.contains("on")){document.querySelectorAll("video").forEach(v=>v.pause());r.classList.add("on");r.innerHTML=`<video src="${r.dataset.src}" playsinline autoplay controls></video>`}
   const sb=e.target.closest(".sens button");if(sb)sb.parentElement.classList.add("open");
@@ -453,7 +457,7 @@ const F=id=>document.getElementById(id).value.trim();document.getElementById("t-
 function update(){const l=document.getElementById("tl");const arr=[...filled].sort().map(i=>ITEMS[i][1]);l.innerHTML=arr.length?arr.map(t=>`<li>${t}</li>`).join(""):'<li class="e">O case está vazio…</li>';
  document.getElementById("mt").style.width=filled.size/6*100+"%";document.getElementById("mc").textContent=filled.size+" de 6";
  document.getElementById("lbl").textContent=filled.size?"EVENTO · "+filled.size+" ITENS":"EVENTO —";
- const b=document.getElementById("send");b.classList.toggle("off",!filled.size);const dt=F("f-dt")?F("f-dt").split("-").reverse().join("/"):"";const d=[F("f-ev")&&"Evento: "+F("f-ev"),F("f-ci")&&"Cidade: "+F("f-ci"),dt&&"Data: "+dt,F("f-du")&&"Duração: "+F("f-du")].filter(Boolean);document.getElementById("t-det").textContent=d.join("\n");
+ const b=document.getElementById("send");b.classList.toggle("off",!filled.size);const dt=F("f-dt")?F("f-dt").split("-").reverse().join("/"):"";const d=[F("f-ev")&&"Evento: "+F("f-ev"),F("f-ci")&&"Cidade: "+F("f-ci"),dt&&"Data: "+dt,F("f-du")&&"Duração: "+F("f-du"),F("f-qe")&&"Quantidade de eventos: "+F("f-qe"),F("f-pu")&&"Público: "+F("f-pu")].filter(Boolean);document.getElementById("t-det").textContent=d.join("\n");
  b.href="https://wa.me/5551997308338?text="+encodeURIComponent("Oi Guilherme! Montei minha cobertura no seu site:\n"+arr.map(x=>"• "+x).join("\n")+(d.length?"\n\n"+d.join("\n"):""))}
 function put(i){if(filled.has(i))return;filled.add(i);const s=foam.children[i];s.classList.add("filled");s.insertAdjacentHTML("beforeend",`<div class="in">${I[ITEMS[i][0]]}<span>${ITEMS[i][1]}</span></div>`);shelf.querySelector(`.item[data-i="${i}"]`).classList.add("used");update()}
 function take(i){filled.delete(i);const s=foam.children[i];s.classList.remove("filled");s.querySelector(".in")?.remove();shelf.querySelector(`.item[data-i="${i}"]`).classList.remove("used");update()}
@@ -470,7 +474,7 @@ shelf.addEventListener("pointerup",e=>{if(cur===null)return;const hot=foam.query
  foam.querySelectorAll(".hot").forEach(s=>s.classList.remove("hot"));ghost&&ghost.remove();ghost=null;cur=null});
 update();
 
-["f-ev","f-ci","f-dt","f-du"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",update);el.addEventListener("change",update)});
+["f-ev","f-ci","f-dt","f-du","f-qe","f-pu"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("input",update);el.addEventListener("change",update)});
 
 
 /* proteção básica do conteúdo: sem menu de "salvar", sem arrastar, sem baixar pelo player */
