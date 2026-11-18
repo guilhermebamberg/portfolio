@@ -234,7 +234,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   summary{font-size:22px}
   .fstage{aspect-ratio:auto;height:88vh}.ftxt{font-size:10vw;top:10%;line-height:.98;left:0;text-align:center}.fstage .fbg,.fstage .fper{object-position:54% 50%}.fbtn{left:20px;right:20px;top:auto;justify-content:center;bottom:8%}
   .bast{grid-template-columns:1fr;gap:28px}.bast h3{font-size:9.6vw}.bast video{width:min(300px,82vw)}
-  .stage{grid-template-columns:1fr}.shelf{display:grid;grid-template-columns:1fr 1fr;gap:8px}.shelf h3{display:none}.item{padding:12px;gap:10px;touch-action:manipulation;flex-direction:column;align-items:flex-start;min-height:112px}.item svg{width:30px;height:30px}.item b{font-size:14px;line-height:1.2}.item small{font-size:12px;line-height:1.3}.item.used{opacity:.35}.swipe{display:flex!important}.foam{grid-auto-rows:120px}.side .ticket{transform:none}.ticket{position:static;transform:none}.fields{grid-template-columns:1fr}
+  .stage{grid-template-columns:1fr}.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.shelf h3{display:none}.item{padding:10px 8px;gap:6px;touch-action:none;flex-direction:column;align-items:center;text-align:center;min-height:96px;justify-content:center}.item svg{width:30px;height:30px}.item b{font-size:12.5px;line-height:1.15}.item small{display:none}.item.used{opacity:.35}.swipe{display:flex!important}.foam{grid-auto-rows:120px}.side .ticket{transform:none}.ticket{position:static;transform:none}.fields{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
 </style>
@@ -338,7 +338,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     <h2 class="d rv">Arraste o que vai <em>no seu evento</em>.</h2>
     <p class="rv" style="color:var(--mute);font-size:18px;max-width:52ch;margin:-30px 0 40px">Cada equipamento é um serviço. Coloque no case, preencha os detalhes e o pedido chega pronto no meu WhatsApp.</p>
     <div class="stage rv">
-      <div class="swipe" style="display:none;align-items:center;gap:8px;font-size:14px;color:var(--mute);margin-bottom:10px"><b style="color:var(--blue);font-size:18px">👆</b> Toque nos equipamentos para colocar no case<b id="swc" style="color:var(--blue)"></b></div>
+      <div class="swipe" style="display:none;align-items:center;gap:8px;font-size:14px;color:var(--mute);margin-bottom:10px"><b style="color:var(--blue);font-size:18px">👆</b> Arraste (ou toque) os equipamentos para o case<b id="swc" style="color:var(--blue)"></b></div>
       <div class="shelf" id="shelf"><h3>Equipamentos · arraste para o case (ou toque)</h3></div>
       <div>
         <div class="case">
@@ -464,7 +464,7 @@ function take(i){filled.delete(i);const s=foam.children[i];s.classList.remove("f
 foam.addEventListener("click",e=>{const x=e.target.closest(".x");if(x)take(+x.parentElement.dataset.i)});
 let ghost=null,cur=null,sx=0,sy=0,moved=false;
 shelf.addEventListener("click",e=>{const it=e.target.closest(".item");if(it&&matchMedia("(pointer:coarse)").matches)put(+it.dataset.i)});
-shelf.addEventListener("pointerdown",e=>{if(e.pointerType==="touch")return;const it=e.target.closest(".item");if(!it)return;cur=+it.dataset.i;sx=e.clientX;sy=e.clientY;moved=false;it.setPointerCapture(e.pointerId)});
+shelf.addEventListener("pointerdown",e=>{const it=e.target.closest(".item");if(!it)return;cur=+it.dataset.i;sx=e.clientX;sy=e.clientY;moved=false;it.setPointerCapture(e.pointerId)});
 shelf.addEventListener("pointermove",e=>{if(cur===null)return;if(!moved&&Math.hypot(e.clientX-sx,e.clientY-sy)<6)return;
  if(!ghost){moved=true;ghost=document.createElement("div");ghost.className="ghost";ghost.innerHTML=I[ITEMS[cur][0]];document.body.appendChild(ghost)}
  ghost.style.left=e.clientX+"px";ghost.style.top=e.clientY+"px";
