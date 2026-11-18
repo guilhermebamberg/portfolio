@@ -234,7 +234,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   summary{font-size:22px}
   .fstage{aspect-ratio:auto;height:88vh}.ftxt{font-size:10vw;top:10%;line-height:.98;left:0;text-align:center}.fstage .fbg,.fstage .fper{object-position:54% 50%}.fbtn{left:20px;right:20px;top:auto;justify-content:center;bottom:8%}
   .bast{grid-template-columns:1fr;gap:28px}.bast h3{font-size:9.6vw}.bast video{width:min(300px,82vw)}
-  .stage{grid-template-columns:1fr}.shelf{flex-direction:row;overflow-x:auto;flex-wrap:nowrap;padding-bottom:8px;mask-image:linear-gradient(90deg,#000 80%,transparent)}.shelf h3{display:none}.item{flex:none;width:58vw;padding:10px 12px}.item svg{width:34px;height:34px}.swipe{display:flex!important}.foam{grid-auto-rows:120px}.side .ticket{transform:none}.ticket{position:static;transform:none}.fields{grid-template-columns:1fr}
+  .stage{grid-template-columns:1fr}.shelf{display:grid;grid-template-columns:1fr 1fr;gap:8px}.shelf h3{display:none}.item{padding:12px;gap:10px;touch-action:manipulation;flex-direction:column;align-items:flex-start;min-height:112px}.item svg{width:30px;height:30px}.item b{font-size:14px;line-height:1.2}.item small{font-size:12px;line-height:1.3}.item.used{opacity:.35}.swipe{display:flex!important}.foam{grid-auto-rows:120px}.side .ticket{transform:none}.ticket{position:static;transform:none}.fields{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
 </style>
@@ -338,7 +338,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     <h2 class="d rv">Arraste o que vai <em>no seu evento</em>.</h2>
     <p class="rv" style="color:var(--mute);font-size:18px;max-width:52ch;margin:-30px 0 40px">Cada equipamento é um serviço. Coloque no case, preencha os detalhes e o pedido chega pronto no meu WhatsApp.</p>
     <div class="stage rv">
-      <div class="swipe" style="display:none;align-items:center;gap:8px;font-size:14px;color:var(--mute);margin-bottom:10px">Deslize para ver todos os equipamentos <b style="color:var(--blue);font-size:18px">→</b> e toque para colocar no case</div>
+      <div class="swipe" style="display:none;align-items:center;gap:8px;font-size:14px;color:var(--mute);margin-bottom:10px"><b style="color:var(--blue);font-size:18px">👆</b> Toque nos equipamentos para colocar no case<b id="swc" style="color:var(--blue)"></b></div>
       <div class="shelf" id="shelf"><h3>Equipamentos · arraste para o case (ou toque)</h3></div>
       <div>
         <div class="case">
@@ -456,14 +456,15 @@ const filled=new Set();
 const F=id=>document.getElementById(id).value.trim();document.getElementById("t-n").textContent=String(Math.floor(Math.random()*9000)+1000);
 function update(){const l=document.getElementById("tl");const arr=[...filled].sort().map(i=>ITEMS[i][1]);l.innerHTML=arr.length?arr.map(t=>`<li>${t}</li>`).join(""):'<li class="e">O case está vazio…</li>';
  document.getElementById("mt").style.width=filled.size/6*100+"%";document.getElementById("mc").textContent=filled.size+" de 6";
- document.getElementById("lbl").textContent=filled.size?"EVENTO · "+filled.size+" ITENS":"EVENTO —";
+ document.getElementById("lbl").textContent=filled.size?"EVENTO · "+filled.size+(filled.size===1?" ITEM":" ITENS"):"EVENTO —";const sc=document.getElementById("swc");if(sc)sc.textContent=filled.size?" · "+filled.size+" no case ↓":"";
  const b=document.getElementById("send");b.classList.toggle("off",!filled.size);const dt=F("f-dt")?F("f-dt").split("-").reverse().join("/"):"";const d=[F("f-ev")&&"Evento: "+F("f-ev"),F("f-ci")&&"Cidade: "+F("f-ci"),dt&&"Data: "+dt,F("f-du")&&"Duração: "+F("f-du"),F("f-pu")&&"Pessoas no evento: "+F("f-pu")].filter(Boolean);document.getElementById("t-det").textContent=d.join("\n");
  b.href="https://wa.me/5551997308338?text="+encodeURIComponent("Oi Guilherme! Montei minha cobertura no seu site:\n"+arr.map(x=>"• "+x).join("\n")+(d.length?"\n\n"+d.join("\n"):""))}
 function put(i){if(filled.has(i))return;filled.add(i);const s=foam.children[i];s.classList.add("filled");s.insertAdjacentHTML("beforeend",`<div class="in">${I[ITEMS[i][0]]}<span>${ITEMS[i][1]}</span></div>`);shelf.querySelector(`.item[data-i="${i}"]`).classList.add("used");update()}
 function take(i){filled.delete(i);const s=foam.children[i];s.classList.remove("filled");s.querySelector(".in")?.remove();shelf.querySelector(`.item[data-i="${i}"]`).classList.remove("used");update()}
 foam.addEventListener("click",e=>{const x=e.target.closest(".x");if(x)take(+x.parentElement.dataset.i)});
 let ghost=null,cur=null,sx=0,sy=0,moved=false;
-shelf.addEventListener("pointerdown",e=>{const it=e.target.closest(".item");if(!it)return;cur=+it.dataset.i;sx=e.clientX;sy=e.clientY;moved=false;it.setPointerCapture(e.pointerId)});
+shelf.addEventListener("click",e=>{const it=e.target.closest(".item");if(it&&matchMedia("(pointer:coarse)").matches)put(+it.dataset.i)});
+shelf.addEventListener("pointerdown",e=>{if(e.pointerType==="touch")return;const it=e.target.closest(".item");if(!it)return;cur=+it.dataset.i;sx=e.clientX;sy=e.clientY;moved=false;it.setPointerCapture(e.pointerId)});
 shelf.addEventListener("pointermove",e=>{if(cur===null)return;if(!moved&&Math.hypot(e.clientX-sx,e.clientY-sy)<6)return;
  if(!ghost){moved=true;ghost=document.createElement("div");ghost.className="ghost";ghost.innerHTML=I[ITEMS[cur][0]];document.body.appendChild(ghost)}
  ghost.style.left=e.clientX+"px";ghost.style.top=e.clientY+"px";
