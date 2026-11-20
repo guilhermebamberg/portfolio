@@ -266,6 +266,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 #cena .snd.pulse{animation:sndp 1.6s ease-out infinite}
 #cena .snd.pulse svg{animation:sndw 1.6s ease-in-out infinite}
 #cena .snd.done{background:#090d16;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:none;font-size:14px;padding:12px 20px}
+#cena .snd.pulse{animation:sndp 1.6s ease-out infinite!important}
+#cena .snd.pulse svg{animation:sndw 1.6s ease-in-out infinite!important}
 @keyframes sndp{0%{box-shadow:0 16px 44px -8px rgba(58,115,255,.8),0 0 0 0 rgba(58,115,255,.65)}70%,100%{box-shadow:0 16px 44px -8px rgba(58,115,255,.8),0 0 0 26px rgba(58,115,255,0)}}
 @keyframes sndw{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
 #cena .sndnote{position:absolute;left:50%;bottom:calc(5vh + 78px);transform:translateX(-50%);font:600 13px Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#090d16;opacity:0;transition:opacity .35s;white-space:nowrap;pointer-events:none}
@@ -595,8 +597,7 @@ const nav=document.getElementById("nav");addEventListener("scroll",()=>nav.class
   let n=0;const t=setInterval(()=>{n+=Math.max(1,Math.ceil((100-n)/10));if(n>100)n=100;p.textContent=n+"%";b.style.width=n+"%";if(n>=100){clearInterval(t);setTimeout(()=>L.classList.add("done"),350);sessionStorage.seen=1}},40)})();
 </script>
 <script>/* dedinho que vai clicar em "Chamar no WhatsApp" (repete enquanto o botão está na tela, até clicarem) */
-(function(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  const st=document.querySelector(".fstage"),btn=document.querySelector(".fbtn");if(!st||!btn)return;
+(function(){  const st=document.querySelector(".fstage"),btn=document.querySelector(".fbtn");if(!st||!btn)return;
   const g=document.createElement("div");g.setAttribute("aria-hidden","true");
   g.style.cssText="position:absolute;z-index:4;left:0;top:0;pointer-events:none;opacity:0;font-size:56px;width:56px;height:56px;line-height:56px;text-align:center;filter:drop-shadow(0 12px 22px rgba(0,0,0,.65))";
   g.textContent="👆";st.appendChild(g);
@@ -625,8 +626,7 @@ const nav=document.getElementById("nav");addEventListener("scroll",()=>nav.class
 
 /* dedinho que "puxa" cada fileira de reels/fotos para o lado e volta: mostra que dá para arrastar (celular).
    Começa à direita da fileira, arrasta um pouquinho para a esquerda (a fileira vai junto) e volta. */
-(function(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  if(!matchMedia("(max-width:900px),(pointer:coarse)").matches)return;
+(function(){  if(!matchMedia("(max-width:900px),(pointer:coarse)").matches)return;
   document.querySelectorAll("#edicao .row").forEach(row=>{
     const blk=row.parentElement;if(getComputedStyle(blk).position==="static")blk.style.position="relative";
     const g=document.createElement("div");g.setAttribute("aria-hidden","true");
@@ -656,6 +656,22 @@ const nav=document.getElementById("nav");addEventListener("scroll",()=>nav.class
         g.style.opacity=op;g.style.transform="translate("+(x0-d)+"px,"+(y0+dy)+"px) rotate(-4deg) scale("+sc+")";
         requestAnimationFrame(f)})(t0)}
     new IntersectionObserver(es=>{visible=es[0].intersectionRatio>.55;if(visible)setTimeout(run,700)},{threshold:[0,.55]}).observe(row);
+  });
+})();
+
+/* vídeos com autoplay: se o celular bloquear (Modo de Pouca Energia / "Reproduzir prévias de vídeo" desligado),
+   aparece um botão ▶ por cima para a pessoa tocar */
+(function(){
+  document.querySelectorAll("video[autoplay]").forEach(v=>{
+    const host=v.parentElement;if(!host)return;if(getComputedStyle(host).position==="static")host.style.position="relative";
+    let btn=null;const hide=()=>{if(btn){btn.remove();btn=null}};
+    const place=()=>{if(!btn)return;const a=host.getBoundingClientRect(),r=v.getBoundingClientRect();
+      btn.style.left=(r.left-a.left+r.width/2-34)+"px";btn.style.top=(r.top-a.top+r.height/2-34)+"px"};
+    const show=()=>{if(btn)return;btn=document.createElement("button");btn.type="button";btn.setAttribute("aria-label","Tocar vídeo");btn.textContent="▶";
+      btn.style.cssText="position:absolute;z-index:5;width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.94);color:#090d16;font-size:26px;line-height:68px;padding:0 0 0 5px;box-shadow:0 12px 34px rgba(0,0,0,.45);cursor:pointer";
+      host.appendChild(btn);place();btn.addEventListener("click",e=>{e.stopPropagation();const p=v.play();if(p&&p.then)p.then(hide).catch(()=>{});else hide()})};
+    addEventListener("resize",place);v.addEventListener("playing",hide);
+    new IntersectionObserver(es=>{if(!es[0].isIntersecting||!v.paused)return;const p=v.play();if(p&&p.catch)p.catch(show)},{threshold:.3}).observe(v);
   });
 })();
 </script>
