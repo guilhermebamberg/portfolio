@@ -271,7 +271,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 #cena .sndnote{position:absolute;left:50%;bottom:calc(5vh + 78px);transform:translateX(-50%);font:600 13px Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#090d16;opacity:0;transition:opacity .35s;white-space:nowrap;pointer-events:none}
 #cena .sndnote.on{opacity:.75}
 @media (min-width:900px){#cena .snd{left:66%}#cena .sndnote{left:66%}#cena .tx{padding:0 0 0 6vw;right:auto;max-width:46vw;top:50%;transform:translateY(-50%)}#cena .tx h2{font-size:clamp(54px,7.4vw,130px)}}
-@media (max-width:899px){#cena .tx{bottom:9vh}#cena .tx.top{top:13vh;bottom:auto}#cena .snd{bottom:3.4vh}#cena .sndnote{bottom:calc(3.4vh + 74px)}}
+@media (max-width:899px){#cena .tx{bottom:9vh}#cena .tx.top{top:13vh;bottom:auto}#cena .snd{bottom:3.4vh;left:calc(50% - 32px);font-size:15px;padding:14px 22px 14px 18px}#cena .sndnote{bottom:calc(3.4vh + 74px);left:calc(50% - 32px)}}
 </style>
 </head>
 <body>
@@ -594,7 +594,7 @@ const nav=document.getElementById("nav");addEventListener("scroll",()=>nav.class
   if(matchMedia("(prefers-reduced-motion: reduce)").matches||sessionStorage.seen){L.classList.add("done");return}
   let n=0;const t=setInterval(()=>{n+=Math.max(1,Math.ceil((100-n)/10));if(n>100)n=100;p.textContent=n+"%";b.style.width=n+"%";if(n>=100){clearInterval(t);setTimeout(()=>L.classList.add("done"),350);sessionStorage.seen=1}},40)})();
 </script>
-<script>/* dedinho que vai clicar em "Chamar no WhatsApp" (3 vezes, só enquanto o botão está na tela) */
+<script>/* dedinho que vai clicar em "Chamar no WhatsApp" (repete enquanto o botão está na tela, até clicarem) */
 (function(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
   const st=document.querySelector(".fstage"),btn=document.querySelector(".fbtn");if(!st||!btn)return;
   const g=document.createElement("div");g.setAttribute("aria-hidden","true");
@@ -603,7 +603,7 @@ const nav=document.getElementById("nav");addEventListener("scroll",()=>nav.class
   let runs=0,busy=false,visible=false,clicked=false;
   btn.addEventListener("click",()=>{clicked=true});
   const T=(x,y,r,s)=>"translate("+x+"px,"+y+"px) rotate("+r+"deg) scale("+s+")";
-  function run(){if(busy||clicked||runs>=3||!visible)return;busy=true;runs++;
+  function run(){if(busy||clicked||!visible)return;busy=true;runs++;
     const a=st.getBoundingClientRect(),b=btn.getBoundingClientRect();
     const x=b.left-a.left+b.width*0.5-36,y=b.top-a.top+b.height*0.5-14;
     g.animate([
@@ -619,8 +619,40 @@ const nav=document.getElementById("nav");addEventListener("scroll",()=>nav.class
       {transform:"scale(.94)",boxShadow:"0 0 0 0 rgba(58,115,255,.7)",offset:.3},
       {transform:"scale(1)",boxShadow:"0 0 0 26px rgba(58,115,255,0)"}
     ],{duration:650,easing:"ease-out"}),1750);
-    setTimeout(()=>{busy=false;if(runs<3)setTimeout(run,3200)},2700)}
+    setTimeout(()=>{busy=false;setTimeout(run,3200)},2700)}
   new IntersectionObserver(es=>{visible=es[0].intersectionRatio>.6;if(visible)setTimeout(run,700)},{threshold:[0,.6]}).observe(btn);
+})();
+
+/* dedinho que "puxa" as fileiras de reels/fotos para o lado: mostra que dá para arrastar (celular) */
+(function(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  if(!matchMedia("(max-width:900px),(pointer:coarse)").matches)return;
+  document.querySelectorAll("#edicao .row").forEach(row=>{
+    const blk=row.parentElement;if(getComputedStyle(blk).position==="static")blk.style.position="relative";
+    const g=document.createElement("div");g.setAttribute("aria-hidden","true");
+    g.style.cssText="position:absolute;z-index:6;left:0;top:0;width:56px;height:56px;line-height:56px;text-align:center;font-size:52px;pointer-events:none;opacity:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,.7))";
+    g.textContent="👆";blk.appendChild(g);
+    let runs=0,busy=false,stop=false,visible=false;
+    const halt=()=>{stop=true};["touchstart","pointerdown","wheel"].forEach(ev=>row.addEventListener(ev,halt,{passive:true}));
+    const T=(x,y,r,s)=>"translate("+x+"px,"+y+"px) rotate("+r+"deg) scale("+s+")";
+    const D=150,DUR=900;
+    function run(){if(busy||stop||runs>=2||!visible)return;busy=true;runs++;
+      const a=blk.getBoundingClientRect(),r=row.getBoundingClientRect();
+      const x0=r.left-a.left+r.width*0.74-24,y=r.top-a.top+Math.min(r.height*0.42,260)-10;
+      g.animate([
+        {opacity:0,transform:T(x0+40,y+40,6,1)},
+        {opacity:1,transform:T(x0,y,-4,1),offset:.2},
+        {opacity:1,transform:T(x0,y+4,-4,.9),offset:.3},
+        {opacity:1,transform:T(x0-D,y+4,-4,.9),offset:.62},
+        {opacity:1,transform:T(x0-D,y,-4,1),offset:.7},
+        {opacity:0,transform:T(x0-D-20,y+30,0,1)}
+      ],{duration:2600,easing:"cubic-bezier(.45,0,.2,1)",fill:"forwards"});
+      const snap=row.style.scrollSnapType;
+      setTimeout(()=>{if(stop)return;row.style.scrollSnapType="none";const t0=performance.now();
+        (function f(t){if(stop){row.style.scrollSnapType=snap;return}const k=Math.min(1,(t-t0)/DUR),e=1-Math.pow(1-k,3);row.scrollLeft=D*e;if(k<1)requestAnimationFrame(f);
+          else setTimeout(()=>{const t1=performance.now();(function b(t){if(stop){row.style.scrollSnapType=snap;return}const q=Math.min(1,(t-t1)/650),e2=q*q*(3-2*q);row.scrollLeft=D*(1-e2);if(q<1)requestAnimationFrame(b);else row.style.scrollSnapType=snap})(t1)},350)})(t0)},780);
+      setTimeout(()=>{busy=false;if(runs<2&&!stop)setTimeout(run,4000)},2800)}
+    new IntersectionObserver(es=>{visible=es[0].intersectionRatio>.6;if(visible)setTimeout(run,900)},{threshold:[0,.6]}).observe(row);
+  });
 })();
 </script>
 <script src="assets/cena.js" defer></script>
