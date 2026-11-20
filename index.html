@@ -247,6 +247,31 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   .stage{grid-template-columns:1fr}.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.shelf h3{display:none}.item{padding:10px 8px;gap:6px;touch-action:none;flex-direction:column;align-items:center;text-align:center;min-height:96px;justify-content:center}.item svg{width:30px;height:30px}.item b{font-size:12.5px;line-height:1.15}.item small{display:none}.item.used{opacity:.35}.swipe{display:flex!important}.foam{grid-auto-rows:120px}.side .ticket{transform:none}.ticket{position:static;transform:none}.fields{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+/* ===== cena 3D (v3) ===== */
+#cena{position:relative;height:640vh;background:#04060b}
+#cena .stg{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--cbg,#04060b)}
+#cena .glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 50% at 50% 46%,var(--cg,rgba(58,115,255,0)),transparent 70%)}
+#cena canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#cena .tx{position:absolute;left:0;right:0;padding:0 6vw;pointer-events:none;opacity:0;will-change:transform,opacity}
+#cena .tx .k{font:600 13px Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+#cena .tx h2{font-family:Archivo,sans-serif;font-stretch:68%;font-weight:900;text-transform:uppercase;line-height:.88;font-size:clamp(54px,11vw,150px);color:var(--cink,#f2f4f8);margin:0}
+#cena .tx h2 em{font-style:normal;color:var(--blue)}
+#cena .tx p{margin-top:16px;font-size:clamp(17px,2vw,22px);color:var(--cink2,rgba(242,244,248,.75));max-width:30ch;line-height:1.4}
+#cena .hint{position:absolute;bottom:3vh;left:0;right:0;text-align:center;font:600 12px Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,244,248,.55);pointer-events:none}
+#cena .bar{position:absolute;left:0;top:0;height:3px;background:var(--blue);width:0}
+#cena .snd{position:absolute;left:50%;bottom:5vh;z-index:3;transform:translateX(-50%) translateY(14px);display:flex;align-items:center;gap:12px;padding:16px 28px 16px 22px;border-radius:999px;background:var(--blue);color:#fff;font:800 clamp(16px,4.4vw,20px) Archivo,Inter,sans-serif;font-stretch:80%;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s,background .3s;box-shadow:0 16px 44px -8px rgba(58,115,255,.8)}
+#cena .snd svg{width:26px;height:26px;flex:none}
+#cena .snd.on{opacity:1;pointer-events:auto;transform:translateX(-50%)}
+#cena .snd.pulse{animation:sndp 1.6s ease-out infinite}
+#cena .snd.pulse svg{animation:sndw 1.6s ease-in-out infinite}
+#cena .snd.done{background:#090d16;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:none;font-size:14px;padding:12px 20px}
+@keyframes sndp{0%{box-shadow:0 16px 44px -8px rgba(58,115,255,.8),0 0 0 0 rgba(58,115,255,.65)}70%,100%{box-shadow:0 16px 44px -8px rgba(58,115,255,.8),0 0 0 26px rgba(58,115,255,0)}}
+@keyframes sndw{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
+#cena .sndnote{position:absolute;left:50%;bottom:calc(5vh + 78px);transform:translateX(-50%);font:600 13px Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#090d16;opacity:0;transition:opacity .35s;white-space:nowrap;pointer-events:none}
+#cena .sndnote.on{opacity:.75}
+@media (min-width:900px){#cena .snd{left:66%}#cena .sndnote{left:66%}#cena .tx{padding:0 0 0 6vw;right:auto;max-width:46vw;top:50%;transform:translateY(-50%)}#cena .tx h2{font-size:clamp(54px,7.4vw,130px)}}
+@media (max-width:899px){#cena .tx{bottom:9vh}#cena .tx.top{top:13vh;bottom:auto}#cena .snd{bottom:3.4vh}#cena .sndnote{bottom:calc(3.4vh + 74px)}}
 </style>
 </head>
 <body>
@@ -268,6 +293,22 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     </div>
   </div>
 </header>
+
+<div id="cena" aria-label="Como a cobertura vira conteúdo">
+ <div class="stg">
+  <div class="glow"></div>
+  <canvas></canvas>
+  <div class="bar"></div>
+  <div class="tx" data-i="0"><div class="k">Cobertura de eventos</div><h2>Seu evento<br>acontece<br><em>uma vez.</em></h2></div>
+  <div class="tx top" data-i="1"><div class="k">Stories ao vivo</div><h2>Eu faço<br>ele <em>virar<br>conteúdo.</em></h2><p>Gravo, edito e entrego enquanto ainda está acontecendo.</p></div>
+  <div class="tx" data-i="2"><div class="k">Same day</div><h2>No mesmo<br><em>dia.</em></h2><p>Seu público vê o evento antes de ele acabar.</p></div>
+  <div class="tx top" data-i="3"><div class="k">Paty Araújo · @patyaraujo.oficial</div><h2>Ele é<br>ninja.<br><em>É absurdo.</em></h2><p>Estrategista de eventos dos maiores do digital, sobre o trabalho do Gui.</p></div>
+  <div class="sndnote">você precisa ouvir isso</div>
+  <button class="snd pulse" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg><span>Toque para ouvir</span></button>
+  <div class="hint">role para ver</div>
+ </div>
+</div>
+
 
 <section id="experts">
   <div class="wrap">
@@ -318,6 +359,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     <div class="lab rv"><b>(05)</b> Depoimentos</div>
     <h2 class="d rv">O que dizem alguns dos últimos experts que eu cobri.</h2>
     <div class="vdeps rv">
+      <div class="vd"><video src="assets/vid/depo/paty.mp4" poster="assets/vid/depo/paty.jpg" controls playsinline preload="none"></video><p><b>Paty Araújo</b> @patyaraujo.oficial<br><span>"Ele é ninja. É absurdo."</span></p></div>
       <div class="vd"><video src="assets/vid/depo/rinara.mp4" poster="assets/vid/depo/rinara.jpg" controls playsinline preload="none"></video><p><b>Dra. Rinara Grossi</b> @drarinaragrossi<br><span>"Eu só confiei de olho fechado."</span></p></div>
       <div class="vd"><video src="assets/vid/depo/mari.mp4" poster="assets/vid/depo/mari.jpg" controls playsinline preload="none"></video><p><b>Mariana Sartorelle</b> @psico.marisartorelle<br><span>"Eu não precisei me preocupar com nada."</span></p></div>
     </div>
@@ -552,5 +594,35 @@ const nav=document.getElementById("nav");addEventListener("scroll",()=>nav.class
   if(matchMedia("(prefers-reduced-motion: reduce)").matches||sessionStorage.seen){L.classList.add("done");return}
   let n=0;const t=setInterval(()=>{n+=Math.max(1,Math.ceil((100-n)/10));if(n>100)n=100;p.textContent=n+"%";b.style.width=n+"%";if(n>=100){clearInterval(t);setTimeout(()=>L.classList.add("done"),350);sessionStorage.seen=1}},40)})();
 </script>
+<script>/* dedinho que vai clicar em "Chamar no WhatsApp" (3 vezes, só enquanto o botão está na tela) */
+(function(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const st=document.querySelector(".fstage"),btn=document.querySelector(".fbtn");if(!st||!btn)return;
+  const g=document.createElement("div");g.setAttribute("aria-hidden","true");
+  g.style.cssText="position:absolute;z-index:4;left:0;top:0;pointer-events:none;opacity:0;font-size:56px;width:56px;height:56px;line-height:56px;text-align:center;filter:drop-shadow(0 12px 22px rgba(0,0,0,.65))";
+  g.textContent="👆";st.appendChild(g);
+  let runs=0,busy=false,visible=false,clicked=false;
+  btn.addEventListener("click",()=>{clicked=true});
+  const T=(x,y,r,s)=>"translate("+x+"px,"+y+"px) rotate("+r+"deg) scale("+s+")";
+  function run(){if(busy||clicked||runs>=3||!visible)return;busy=true;runs++;
+    const a=st.getBoundingClientRect(),b=btn.getBoundingClientRect();
+    const x=b.left-a.left+b.width*0.5-36,y=b.top-a.top+b.height*0.5-14;
+    g.animate([
+      {opacity:0,transform:T(x+70,y+150,8,1)},
+      {opacity:1,transform:T(x,y,-4,1),offset:.55},
+      {opacity:1,transform:T(x,y,-4,1),offset:.62},
+      {opacity:1,transform:T(x,y+6,-4,.9),offset:.72},
+      {opacity:1,transform:T(x,y,-4,1),offset:.82},
+      {opacity:0,transform:T(x+30,y+70,4,1)}
+    ],{duration:2600,easing:"cubic-bezier(.45,0,.2,1)",fill:"forwards"});
+    setTimeout(()=>btn.animate([
+      {transform:"scale(1)",boxShadow:"0 0 0 0 rgba(58,115,255,.7)"},
+      {transform:"scale(.94)",boxShadow:"0 0 0 0 rgba(58,115,255,.7)",offset:.3},
+      {transform:"scale(1)",boxShadow:"0 0 0 26px rgba(58,115,255,0)"}
+    ],{duration:650,easing:"ease-out"}),1750);
+    setTimeout(()=>{busy=false;if(runs<3)setTimeout(run,3200)},2700)}
+  new IntersectionObserver(es=>{visible=es[0].intersectionRatio>.6;if(visible)setTimeout(run,700)},{threshold:[0,.6]}).observe(btn);
+})();
+</script>
+<script src="assets/cena.js" defer></script>
 </body>
 </html>
